@@ -1,0 +1,20 @@
+
+h1. getBooks
+
+h2. Purpose
+
+
+
+h2. Examples
+
+{code:java}
+foo.getBooks()
+{code}
+
+h2. Description
+
+
+
+Arguments:
+
+[]

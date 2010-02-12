@@ -1,0 +1,21 @@
+
+h1. addToBooks
+
+h2. Purpose
+
+
+
+h2. Examples
+
+{code:java}
+foo.addToBooks(object)
+{code}
+
+h2. Description
+
+
+
+Arguments:
+
+[* @object@
+]

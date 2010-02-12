@@ -1,0 +1,21 @@
+
+h1. removeFromBooks
+
+h2. Purpose
+
+
+
+h2. Examples
+
+{code:java}
+foo.removeFromBooks(object)
+{code}
+
+h2. Description
+
+
+
+Arguments:
+
+[* @object@
+]

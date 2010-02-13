@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2010 Keith Thomas
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,23 +14,21 @@
  * limitations under the License.
  *
  */
-package org.grails.hbase.api.finders
+package org.grails.hbase.finders
+
+import org.grails.hbase.api.finders.FinderFilter
+import org.grails.hbase.api.finders.FinderFilterList
+import org.grails.hbase.api.finders.Operator
 /**
- * Visitor pattern to allow objects to navigate through a filter structure. Any
- * visitor has to implement both methods and the pass itself into an accept()
- * method on FinderFilter and FinderFilterList. For example,
- * <p>
- * def f = new FinderFilter('author', 'Dan Brown')<br/>
- * def v = new myVisitor()<br/>
- * f.accept(v)
- * </p>
- * The visitor will then be called back via its visit() method
+ * Manage the addition of new filters in a filter list with the logical operators 'or' & 'and'
+ *
  * @author Keith Thomas, redcoat.systems@gmail.com
- * created on 05-Feb-2010
- * @see FinderFilter, FinderFilterList
+ * created on 24-Feb-2010
  */
-public interface FinderFilterVisitor {
-    public void visit(FinderFilter filter)
-    public void visit(FinderFilterList filterlist)
+interface LogicalFilterListBuilder {
+    def addFilter(FinderFilter filter)
+    def addFilter(FinderFilterList filter)
+    def getFinderFilters()
+    def setOperatorOnLastFilter(Operator op)
 }
 

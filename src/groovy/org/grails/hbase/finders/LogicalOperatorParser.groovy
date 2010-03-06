@@ -44,7 +44,6 @@ class LogicalOperatorParser implements DynamicFinderMethodParser {
         if (!remainingMethodNameTokens) throw new MissingMethodException(builder.methodName, builder.domainClass.clazz, new Object[0])
 
         builder.addFinderFilter(new FinderFilterList(operator))
-        LOG.debug("FinderFilter built: ${builder.finderFilters}")
 
         builder.parser.parse(builder, remainingMethodNameTokens, methodArgs)
     }

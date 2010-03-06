@@ -34,10 +34,10 @@ import org.apache.commons.logging.LogFactory
 
 import org.codehaus.groovy.grails.commons.GrailsDomainClassProperty
 
+import org.grails.hbase.init.HBaseTableManager
 import org.grails.hbase.util.HBaseNameUtils
 import org.grails.hbase.store.Constants
 import org.grails.hbase.error.UnsupportedFeatureException
-
 /**
  * Creates, deletes store and associated columns
  *
@@ -45,21 +45,17 @@ import org.grails.hbase.error.UnsupportedFeatureException
  * Date: Sep 1, 2009
  * Time: 2:32:37 PM
  */
-
 public class ReferenceTable {
 
-    def createTable(HBaseAdmin hbAdmin) {
+    def createTable(HBaseAdmin hbAdmin, HBaseTableManager tableManager) {
         String tableName = HBaseNameUtils.getReferenceTableName()
         def tableDesc = new HTableDescriptor(tableName)
         def columnDesc = new HColumnDescriptor(Constants.DEFAULT_REFERENCE_FAMILY_STRING)
         columnDesc.setMaxVersions(1)
         tableDesc.addFamily(columnDesc)
 
-        if (hbAdmin.tableExists(tableName)) {
-            LOG.info("Deleting existing HBase table named $tableName")
-            hbAdmin.disableTable(tableName)
-            hbAdmin.deleteTable(tableName)
-        }
+        // Delete the table if it already exists
+        tableManager.delete(tableName)
 
         LOG.info("Creating HBase table named $tableName with family '${Constants.DEFAULT_REFERENCE_FAMILY_STRING}'")
         hbAdmin.createTable(tableDesc)

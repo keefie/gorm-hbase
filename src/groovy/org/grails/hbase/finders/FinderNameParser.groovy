@@ -34,10 +34,14 @@ class FinderNameParser implements DynamicFinderMethodParser {
 
         builder.parser = this.nextParser
         
-        int i = 1;
+        int i = 0;
+        StringBuffer finderNameBuffer =  new StringBuffer("");
 
-        StringBuffer finderNameBuffer =  new StringBuffer("find");
-        while (methodNameTokens[i].equals('By') || methodNameTokens[i].equals('All')) {
+        while (i < methodNameTokens.length &&
+               (methodNameTokens[i].equals('find') ||
+                methodNameTokens[i].equals('By') ||
+                methodNameTokens[i].equals('All')))
+        {
             finderNameBuffer << methodNameTokens[i]
             i++
         }

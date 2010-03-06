@@ -14,12 +14,10 @@
  * limitations under the License.
  *
  */
-
 package org.grails.hbase.associations
 
 import org.simpleframework.xml.Root
 import org.simpleframework.xml.ElementArray
-
 /**
  * Sets of References are not persisted as a java.util.Set they are saved as
  * this class
@@ -27,7 +25,6 @@ import org.simpleframework.xml.ElementArray
  * @author Keith Thomas, redcoat.systems@gmail.com
  * created on 11/08/2009
  */
-
 @Root
 public class ReferenceSet {
 

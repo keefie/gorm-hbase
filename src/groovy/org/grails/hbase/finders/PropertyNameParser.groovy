@@ -58,11 +58,10 @@ class PropertyNameParser implements DynamicFinderMethodParser {
         throw new MissingMethodException(builder.methodName, builder.domainClass.clazz, new Object[0])
 
         builder.addFinderFilter(new FinderFilter(propertyName, methodArgs[0]))
-        LOG.debug("FinderFilter built: ${builder.finderFilters}")
 
         Object[] remainingMethodArgs = this.reduceArgs(methodArgs)
         builder.methodArgs = remainingMethodArgs
-            
+
         String[] remainingMethodNameTokens = builder.reduceArray(methodNameTokens, tokensConsumed)
 
         builder.checkArgs(remainingMethodNameTokens, remainingMethodArgs)  

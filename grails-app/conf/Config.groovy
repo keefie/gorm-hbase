@@ -68,6 +68,7 @@ log4j = {
 
     warn   'org.mortbay.log'
 
+    // debug  'org.grails.hbase.finders'
     info   'org.grails.hbase'
 }
 

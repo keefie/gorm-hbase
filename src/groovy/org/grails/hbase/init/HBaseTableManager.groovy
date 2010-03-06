@@ -111,7 +111,7 @@ public class HBaseTableManager {
 
 
     def createReferenceTable() {
-        referenceTable.createTable(admin)
+        referenceTable.createTable(admin, this)
     }
 
     

@@ -57,8 +57,7 @@ class ComparisonOperatorParser implements DynamicFinderMethodParser {
         LOG.debug("Exiting loop with operator set to: $operator")
         String[] remainingMethodNameTokens
         if (operator) {
-            builder.getCurrentFilter().operator = operator
-            LOG.debug("FinderFilter built: ${builder.finderFilters}")
+            builder.setOperatorOnCurrentFilter(operator)
             remainingMethodNameTokens = builder.reduceArray(methodNameTokens, tokensConsumed)
         }
         else remainingMethodNameTokens = methodNameTokens
@@ -68,13 +67,7 @@ class ComparisonOperatorParser implements DynamicFinderMethodParser {
         if (remainingMethodNameTokens) builder.parser.parse(builder, remainingMethodNameTokens, methodArgs)
     }
 
-    def comparisonOperators = [
-        'LessThan':Operator.LESS,
-        'LessThanEquals':Operator.LESS_OR_EQUAL,
-        'GreaterThan':Operator.GREATER,
-        'GreaterThanEquals':Operator.GREATER_OR_EQUAL,
-        'NotEqual':Operator.NOT_EQUAL
-    ]
+    private Map comparisonOperators = Operator.getComparisionOperators();
 
     private static final DynamicFinderMethodParser nextParser = new LogicalOperatorParser();
     private static final Log LOG = LogFactory.getLog(ComparisonOperatorParser.class)

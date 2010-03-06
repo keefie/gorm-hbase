@@ -16,7 +16,7 @@
  */
 package org.grails.hbase.api.finders
 /**
- * Marker interface deniting a dynamic finder filter
+ * Marker interface denoting a dynamic finder filter
  *
  * @author Keith Thomas, redcoat.systems@gmail.com
  * created on 12-Feb-2010

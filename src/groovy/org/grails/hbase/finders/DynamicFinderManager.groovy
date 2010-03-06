@@ -14,18 +14,17 @@
  * limitations under the License.
  *
  */
-
 package org.grails.hbase.finders
 
 import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
 
+import org.apache.hadoop.hbase.filter.Filter
+
 import org.grails.hbase.api.finders.FinderFilterList
 import org.grails.hbase.api.finders.FinderFilter
 import org.grails.hbase.util.HBaseNameUtils
 import org.grails.hbase.util.HBaseFinderUtils
-
-
 /**
  * Takes care of dynamic finder support
  * 
@@ -44,29 +43,33 @@ class DynamicFinderManager {
 
         if (!this.isValidDynamicFinderMethodNameFormat(methodName)) return null
 
+        if (HBaseFinderUtils.hasFilter(args) && methodName.equals('find')) {
+            args = this.setMaxRecords(args, 1)
+            LOG.debug("Invoking list() on behalf of find() with args: $args")
+            return domainClass.list(args)
+        }
+
         if (HBaseFinderUtils.hasFilter(args) || methodName.equals('findAll')) return domainClass.list(args)
 
-        /*
-        def finderFilterListBuilder = new FinderFilterListBuilderX()
-        args = finderFilterListBuilder.createFinderFilters(domainClass, methodName, args)
-        */
+        if (!HBaseFinderUtils.hasNativeHBaseFilter(methodName, args)) {
+            def builder = new FinderFilterListBuilder(HBaseNameUtils.getDomainClass(domainClass.name))
+            builder.methodName = methodName
+            builder.methodArgs = args
+            def finders = builder.finderFilters
 
-        def builder = new FinderFilterListBuilder(HBaseNameUtils.getDomainClass(domainClass.name))
-        builder.methodName = methodName
-        builder.methodArgs = args
-        def finders = builder.finderFilters
-
-        def reducedArgs = builder.methodArgs
-        LOG.debug("Reduced args $reducedArgs")
+            def reducedArgs = builder.methodArgs
+            LOG.debug("Reduced args $reducedArgs")
         
-        if (reducedArgs) args = [finders, reducedArgs[0]] as Object[]
-        else args = [finders] as Object[]
+            if (reducedArgs) args = [finders, reducedArgs[0]] as Object[]
+            else args = [finders] as Object[]
         
-        LOG.debug("List() args built: $args")
+            LOG.debug("List() args built: $args")
 
-        if (!methodName.startsWith('findBy')) return domainClass.list(args)
+            if (!methodName.startsWith('findBy')) return domainClass.list(args)
 
-        args = this.setMaxRecords(args, 1)
+            args = this.setMaxRecords(args, 1)
+        }
+        
         def list = domainClass.list(args)
         if (!list.size()) return null
         return list.get(0)
@@ -90,7 +93,7 @@ class DynamicFinderManager {
         return arguments
     }
 
-    def finders = /findAll||findAllBy([A-Z][a-z|0-9]+)+||findBy([A-Z][a-z|0-9]+)+/
+    def finders = /find|findAll||findAllBy([A-Z][a-z|0-9]+)+||findBy([A-Z][a-z|0-9]+)+/
 
     private static final Log LOG = LogFactory.getLog(DynamicFinderManager.class)
 }

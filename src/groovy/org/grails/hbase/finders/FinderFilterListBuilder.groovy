@@ -14,7 +14,6 @@
  * limitations under the License.
  *
  */
-
 package org.grails.hbase.finders
 
 import org.apache.commons.logging.Log
@@ -25,7 +24,7 @@ import org.codehaus.groovy.grails.commons.GrailsDomainClass
 
 import org.grails.hbase.api.finders.FinderFilterList
 import org.grails.hbase.api.finders.FinderFilter
-
+import org.grails.hbase.api.finders.Operator
 /**
  * Build a FinderFilterList from a dynamic finder method name and its args
  *
@@ -51,10 +50,12 @@ class FinderFilterListBuilder {
 
     def getFinderFilters() {
         LOG.debug("Builder.getFinderFilters() invoked")
-        if (!this.finderFilters) {
-            String[] tokens = StringUtils.splitByCharacterTypeCamelCase(this.methodName)
-            parser.parse(this, tokens, this.methodArgs);
-        }
+
+        String[] tokens = StringUtils.splitByCharacterTypeCamelCase(this.methodName)
+        parser.parse(this, tokens, this.methodArgs);
+        this.finderFilters = logicalBuilder.getFinderFilters()
+
+        LOG.debug("Builder.getFinderFilters() returning: ${this.finderFilters}")
         return this.finderFilters
     }
 
@@ -77,24 +78,13 @@ class FinderFilterListBuilder {
     }
 
     protected void addFinderFilter(filter) {
-        LOG.debug("Filter to be added : $filter")
-        
-        if(!this.finderFilters) {
-            this.finderFilters = filter
-            return
-        }
-
-        def appender = new FilterListAppender(this.finderFilters)
-        appender.append(filter)
-        this.finderFilters = appender.finderFilters
+        LOG.debug("Filter to be added : $filter")        
+        logicalBuilder.addFilter(filter)
+        this.finderFilters = logicalBuilder.finderFilters
     }
 
-    protected FinderFilter getCurrentFilter() {
-        LOG.debug("Getting current filter from: ${this.finderFilters}")
-        def finder = new CurrentFilterFinder(this.finderFilters)
-        def current = finder.find()
-        LOG.debug("Current filter found: $current")
-        return current
+    protected void setOperatorOnCurrentFilter(Operator op) {
+        logicalBuilder.setOperatorOnLastFilter(op)
     }
 
     protected void checkArgs(remainingMethodNameTokens, remainingMethodArgs) {
@@ -110,7 +100,8 @@ class FinderFilterListBuilder {
     String finderName
     GrailsDomainClass domainClass
     DynamicFinderMethodParser parser = new FinderNameParser()
-
+    
+    def logicalBuilder = new LogicalOrFilterListBuilder(this)
     def finderFilters
 
     private static final Log LOG = LogFactory.getLog(FinderFilterListBuilder.class)

@@ -66,11 +66,6 @@ public class FinderFilterList implements DynamicFinderFilter {
         this.filters = filters
     }
 
-    public void accept(FinderFilterVisitor filterVisitor) {
-        LOG.debug("Visitor: ${filterVisitor}, Visited: ${this}")
-        filterVisitor.visit(this)
-    }
-
     public String toString() {
         "${this.class.name}: operator:${operator}, list:${filters}"
     }
@@ -87,10 +82,10 @@ public class FinderFilterList implements DynamicFinderFilter {
     }
 
     public int hashCode() {
-        return new HashCodeBuilder(19, 66).
+        return new HashCodeBuilder(19, 67).
             append(operator).
             append(filters).
-            toHashCode();
+            toHashCode()
     }
 
     Operator operator

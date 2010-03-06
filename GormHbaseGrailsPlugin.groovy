@@ -18,7 +18,7 @@ import org.grails.hbase.init.HBasePluginSupport
 
 class GormHbaseGrailsPlugin {
     // the plugin version
-    def version = "0.2"
+    def version = "0.2.1"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "1.2.1"
     // the other plugins this plugin depends on

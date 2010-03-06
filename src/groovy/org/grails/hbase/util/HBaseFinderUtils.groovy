@@ -14,12 +14,12 @@
  * limitations under the License.
  *
  */
-
 package org.grails.hbase.util
+
+import org.apache.hadoop.hbase.filter.Filter
 
 import org.grails.hbase.api.finders.FinderFilter
 import org.grails.hbase.api.finders.FinderFilterList
-
 /**
  * Utility class for simple logic related to finders and their filters
  *
@@ -31,7 +31,20 @@ import org.grails.hbase.api.finders.FinderFilterList
 class HBaseFinderUtils {
 
     public static boolean hasFilter(Object[] args) {
-        args && (args[0] instanceof FinderFilter || args[0] instanceof FinderFilterList)
+        // Native HBase filters
+        if (args && args[0] instanceof Filter) return true
+
+        // Gorm-hbase plugin filters
+        if (args && (args[0] instanceof FinderFilter || args[0] instanceof FinderFilterList)) return true
+
+        // No filters
+        return false
+    }
+
+    public static hasNativeHBaseFilter(methodName, Object[] args) {
+        if (methodName != "find" && methodName != "findBy") return false
+        if (args && args?.length > 0 && !(args[0] instanceof Filter)) return true
+        return false
     }
 }
 

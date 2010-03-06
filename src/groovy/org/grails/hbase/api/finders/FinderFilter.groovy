@@ -61,17 +61,6 @@ public class FinderFilter implements DynamicFinderFilter {
         this.value = value
     }
 
-    /**
-     * Accepts a FinderFilter visitor and calls back the visitor on
-     * their visit() method
-     *
-     * @param  filterVisitor  The visitorrequesting to be called back
-     */
-    public void accept(FinderFilterVisitor filterVisitor) {
-        LOG.debug("Visitor: ${filterVisitor}, Visited: ${this}")
-        filterVisitor.visit(this)
-    }
-
     public String toString() {
         "${this.class.name}: propertyName:${propertyName}, operator:${operator}, value:${value}"
     }
@@ -85,6 +74,7 @@ public class FinderFilter implements DynamicFinderFilter {
             append(excludeIfColumnMissing, o.excludeIfColumnMissing).
             append(value, o.value).
             isEquals()
+
         return false
     }
 

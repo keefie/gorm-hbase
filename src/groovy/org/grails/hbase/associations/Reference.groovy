@@ -14,7 +14,6 @@
  * limitations under the License.
  *
  */
-
 package org.grails.hbase.associations
 
 import org.apache.hadoop.hbase.util.Bytes
@@ -22,7 +21,6 @@ import org.apache.hadoop.hbase.util.Bytes
 import org.simpleframework.xml.Root
 import org.simpleframework.xml.Element
 import org.simpleframework.xml.ElementArray
-
 /**
  * Stores an reference to/from another row
  *
@@ -53,7 +51,6 @@ public class Reference implements Serializable {
         return Bytes.equals(this.keyValue, otherRef.keyValue)
     }
 
-
     public int hashCode() {
         int hash = 345
         hash = hash + this.columnName?.hashCode()
@@ -63,12 +60,9 @@ public class Reference implements Serializable {
         return hash
     }
 
-    
     public String toString() {
        "$tableName : $columnName : $keyValue"
     }
 
-
     static final long serialVersionUID = -6294946617063040209L
-
 }

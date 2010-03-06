@@ -70,7 +70,7 @@ public class ListPersistentMethod implements PersistentMethod {
                 if (params.sort) sort = params?.sort
             }
             
-            LOG.debug("About to execute list() job for ${clazz.name} with params max=${max}, offset=${offset}")
+            LOG.debug("About to execute list() job for ${clazz.name} with params sort=${sort} max=${max}, offset=${offset}")
 
             def table = this.getTable(clazz, sort)
             def scanner = this.getScanner(table, clazz, filter, sort)
@@ -85,6 +85,7 @@ public class ListPersistentMethod implements PersistentMethod {
                     def instance = instanceMapper.createDomainClass(res, clazz)
                     // TODO find a more efficient way of doing this
                     if (this.isSorted(sort)) instance = clazz.get(instance.id)
+                    LOG.debug("Found instance: $instance")
                     list << instance
                     rowsCollected++
                 }

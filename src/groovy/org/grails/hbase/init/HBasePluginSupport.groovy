@@ -137,6 +137,7 @@ class HBasePluginSupport {
         // TODO Complete dbCreate related processing
         if (dbCreate?.toUpperCase()?.equals("CREATE-DROP")) {
             def createIndexedTables = dataSource?.indexed
+            LOG.debug ("Flag createIndexedTables set to $createIndexedTables")
             def tableManager = HBaseLookupUtils.getBean("hbase.table.manager")
 
             tableManager.createSequenceTable()

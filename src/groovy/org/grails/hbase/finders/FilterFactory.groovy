@@ -83,6 +83,7 @@ class FilterFactory {
     private Filter getSingleColumnValueFilter(finderFilter) {
         LOG.debug ("Creating HBase SingleColumnValueFilter from $finderFilter")
         def columnName = HBaseNameUtils.getDomainColumnName(finderFilter?.propertyName)
+
         def filter = new SingleColumnValueFilter(Constants.DEFAULT_DATA_FAMILY,
             Bytes.toBytes(columnName),
             finderFilter?.operator?.value,
@@ -95,7 +96,7 @@ class FilterFactory {
 
     private Filter getRowFilter(finderFilter) {
         LOG.debug ("Creating HBase RowFilter from $finderFilter")
-        def id = byteArrayConverter.getValueToPersist(finderFilter?.value, finderFilter.propertyName)
+        def id = byteArrayConverter.getValueToPersist(finderFilter?.value?.toString(), finderFilter.propertyName)
         def filter = new RowFilter(finderFilter?.operator?.value, new BinaryComparator(id))
 
         return filter

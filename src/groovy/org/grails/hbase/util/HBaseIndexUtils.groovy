@@ -30,7 +30,7 @@ import org.apache.commons.logging.LogFactory
 
 class HBaseIndexUtils {
 
-    public static boolean isTypeIndexed(Class type) {
+    public static boolean isTypeIndexed(Class type) {        
         if (type instanceof java.sql.Clob
         || type instanceof java.sql.Clob) {
             LOG.debug ("Domain class property of type ${type.name} not indexed")

@@ -47,27 +47,11 @@ public class RowIdGenerator {
         // TODO See if HTable instances can be reused, pooled or whatever helps performance
         HTable sequenceTable = new HTable(conf, sequenceTableName)
 
-        // Get back the next id for the requested associations class
-        RowLock rowLock = sequenceTable.lockRow(Bytes.toBytes(domainTableName))
-        Get g = new Get(Bytes.toBytes(domainTableName), rowLock)
-        Result r = sequenceTable.get(g)
-        byte[] value = r.getValue(Constants.DEFAULT_SEQUENCE_FAMILY,
-            Constants.DEFAULT_SEQUENCE_QUALIFIER)
-        long newId = Bytes.toLong(value)
 
-        // TODO figure out why we get back a negative id
-        if (newId < 0) newId = newId * -1
-
-        // Update the sequence counter for the next client
-        Put p = new Put(Bytes.toBytes(domainTableName), rowLock)
-        p.add(Constants.DEFAULT_SEQUENCE_FAMILY,
-            Constants.DEFAULT_SEQUENCE_QUALIFIER,
-            Bytes.toBytes(newId + 1))
-        sequenceTable.put(p)
-        sequenceTable.unlockRow(rowLock)
-        sequenceTable.close()
-      
-        return newId
+        // Use the HBase builting feature to safely create row id's'
+        return sequenceTable.incrementColumnValue(Bytes.toBytes(domainTableName),
+            Constants.DEFAULT_SEQUENCE_FAMILY,
+            Constants.DEFAULT_SEQUENCE_QUALIFIER, 1)
     }
 
     def conf

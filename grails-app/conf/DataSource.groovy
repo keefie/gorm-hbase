@@ -14,7 +14,8 @@ environments {
 	development {
 		dataSource {
 			dbCreate = "update" // one of 'create', 'create-drop','update'
-			url = "jdbc:hsqldb:mem:devDB"
+                        indexed = true
+                        url = "jdbc:hsqldb:mem:devDB"
 		}
 	}
 	test {

@@ -44,8 +44,7 @@ public class GetPersistentMethod implements PersistentMethod {
             // Construct the ket from the first method arg
             if (arguments.length != 1 || !arguments[0]) return null
 
-            def idString = "${arguments[0]}"
-            long id = new Long(idString).longValue()
+            String id = "${arguments[0]}"
 
             // Access the table containing the requested data
             HTable domainTable = new HTable(conf, HBaseNameUtils.getDomainTableName(clazz.name))

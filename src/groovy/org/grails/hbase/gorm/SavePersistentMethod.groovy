@@ -83,7 +83,7 @@ public class SavePersistentMethod implements PersistentMethod {
         instance.id = rowIdGenerator.getNextId(domainTableName)
 
         // Add the associations instance record to the database
-        byte[] row = Bytes.toBytes(instance.id)
+        byte[] row = Bytes.toBytes(instance.id.toString())
         RowLock rowLock = domainTable.lockRow(row)
         Put p = new Put(row, rowLock)
 
@@ -111,7 +111,7 @@ public class SavePersistentMethod implements PersistentMethod {
 
         // Lock the table and make sure nobody else has updated it first
         // TODO this logic is also used in DeletePersistentMethod, need to pull out and re-use
-        byte[] row = Bytes.toBytes(instance.id)
+        byte[] row = Bytes.toBytes(instance.id.toString())
         RowLock rowLock = domainTable.lockRow(row)
         Get g = new Get(row, rowLock)
 

@@ -44,7 +44,7 @@ public class InstanceMapper {
         GrailsDomainClass grailsClass = HBaseNameUtils.getDomainClass(domainClazz.name)
 
         def instance = domainClazz.newInstance()
-        long id = Bytes.toLong(hbaseData.getRow())
+        long id = new Long(Bytes.toString(hbaseData.getRow()))
         instance.id = id
 
         byte[] versionBytes = hbaseData.getValue(Constants.DEFAULT_CONTROL_FAMILY,

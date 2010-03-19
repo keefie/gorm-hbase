@@ -47,11 +47,30 @@ public class RowIdGenerator {
         // TODO See if HTable instances can be reused, pooled or whatever helps performance
         HTable sequenceTable = new HTable(conf, sequenceTableName)
 
-
         // Use the HBase builting feature to safely create row id's'
         return sequenceTable.incrementColumnValue(Bytes.toBytes(domainTableName),
             Constants.DEFAULT_SEQUENCE_FAMILY,
             Constants.DEFAULT_SEQUENCE_QUALIFIER, 1)
+    }
+
+    def toPersistentForm(Long id) {
+        id
+    }
+
+    def toPersistentForm(String id) {
+        new Long(id)
+    }
+
+    def toInstanceForm(String id) {
+        new Long(id)
+    }
+
+    def toInstanceForm(Long id) {
+        id
+    }
+
+    def toInstanceForm(byte[] id) {
+        Bytes.toLong(id)
     }
 
     def conf

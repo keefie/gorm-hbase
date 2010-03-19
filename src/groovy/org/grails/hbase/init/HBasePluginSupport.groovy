@@ -72,11 +72,13 @@ class HBasePluginSupport {
             bean.getBeanDefinition().setSingleton(true)
             referenceTable = ref("hbase.reference.table")
             byteArrayConverter = ref("hbase.byte.array.converter")
+            rowIdGenerator = ref("hbase.row.id.generator")
         }
 
         "hbase.filter.factory"(org.grails.hbase.finders.FilterFactory) { bean ->
             bean.getBeanDefinition().setSingleton(true)
             byteArrayConverter = ref("hbase.byte.array.converter")
+            rowIdGenerator = ref("hbase.row.id.generator")
         }
 
        "hbase.gorm.count.impl"(org.grails.hbase.gorm.CountPersistentMethod) { bean ->
@@ -89,12 +91,14 @@ class HBasePluginSupport {
             conf = ref("hbase.configuration")
             instanceMapper = ref("hbase.instance.mapper")
             referenceTable = ref("hbase.reference.table")
+            rowIdGenerator = ref("hbase.row.id.generator")
         }
 
         "hbase.gorm.get.impl"(org.grails.hbase.gorm.GetPersistentMethod) { bean ->
             bean.getBeanDefinition().setSingleton(true)
             conf = ref("hbase.configuration")
             instanceMapper = ref("hbase.instance.mapper")
+            rowIdGenerator = ref("hbase.row.id.generator")
         }
 
         "hbase.gorm.list.impl"(org.grails.hbase.gorm.ListPersistentMethod) { bean ->

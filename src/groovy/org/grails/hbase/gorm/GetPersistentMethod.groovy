@@ -41,10 +41,10 @@ public class GetPersistentMethod implements PersistentMethod {
         def instance
 
         try {
-            // Construct the ket from the first method arg
+            // Construct the key from the first method arg
             if (arguments.length != 1 || !arguments[0]) return null
 
-            String id = "${arguments[0]}"
+            def id = rowIdGenerator.toPersistentForm("${arguments[0]}")
 
             // Access the table containing the requested data
             HTable domainTable = new HTable(conf, HBaseNameUtils.getDomainTableName(clazz.name))
@@ -70,6 +70,7 @@ public class GetPersistentMethod implements PersistentMethod {
 
     def conf
     def instanceMapper
+    def rowIdGenerator
 
     private static final Log LOG = LogFactory.getLog(GetPersistentMethod.class)
 }

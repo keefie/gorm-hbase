@@ -44,8 +44,7 @@ public class InstanceMapper {
         GrailsDomainClass grailsClass = HBaseNameUtils.getDomainClass(domainClazz.name)
 
         def instance = domainClazz.newInstance()
-        long id = new Long(Bytes.toString(hbaseData.getRow()))
-        instance.id = id
+        instance.id = rowIdGenerator.toInstanceForm(hbaseData.getRow())
 
         byte[] versionBytes = hbaseData.getValue(Constants.DEFAULT_CONTROL_FAMILY,
             Constants.DEFAULT_VERSION_QUALIFIER)
@@ -182,6 +181,7 @@ public class InstanceMapper {
 
     def referenceTable
     def byteArrayConverter
+    def rowIdGenerator
 
     private static final Log LOG = LogFactory.getLog(InstanceMapper.class)
 }

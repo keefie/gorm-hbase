@@ -51,7 +51,7 @@ public class DeletePersistentMethod implements PersistentMethod {
 
         // Make sure we have the latest copy increase new associations have been created
         // that we don't know about'
-        RowLock rowLock = domainTable.lockRow(Bytes.toBytes(target.id.toString()))
+        RowLock rowLock = domainTable.lockRow(Bytes.toBytes(rowIdGenerator.toPersistentForm(target.id)))
         def instance = this.getLatestCopy(target, domainTable, rowLock)
         if(!instance) {
             throw new DataIntegrityViolationException(
@@ -60,7 +60,7 @@ public class DeletePersistentMethod implements PersistentMethod {
 
         try {
             // Delete the entire row with the key object passed in as the target arg
-            Delete d = new Delete(Bytes.toBytes(instance.id.toString()), HConstants.LATEST_TIMESTAMP, rowLock)
+            Delete d = new Delete(Bytes.toBytes(rowIdGenerator.toPersistentForm(instance.id)), HConstants.LATEST_TIMESTAMP, rowLock)
 
             if (referenceTable.isReferenced(instance)) {
                 domainTable.unlockRow(rowLock)
@@ -99,7 +99,7 @@ public class DeletePersistentMethod implements PersistentMethod {
 
         // Lock the table and make sure nobody else has updated it first
         // TODO this logic is also used in removeAllReferences, need to pull out and re-use
-        byte[] row = Bytes.toBytes(instance.id.toString())
+        byte[] row = Bytes.toBytes(rowIdGenerator.toPersistentForm(instance.id))
         Get g = new Get(row, rowLock)
 
         Result r = domainTable.get(g)
@@ -120,6 +120,7 @@ public class DeletePersistentMethod implements PersistentMethod {
     def conf
     def instanceMapper
     def referenceTable
+    def rowIdGenerator
 
     private static final Log LOG = LogFactory.getLog(DeletePersistentMethod.class)
 }

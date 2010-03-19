@@ -96,13 +96,14 @@ class FilterFactory {
 
     private Filter getRowFilter(finderFilter) {
         LOG.debug ("Creating HBase RowFilter from $finderFilter")
-        def id = byteArrayConverter.getValueToPersist(finderFilter?.value?.toString(), finderFilter.propertyName)
+        def id = byteArrayConverter.getValueToPersist(rowIdGenerator.toPersistentForm(finderFilter?.value), finderFilter.propertyName)
         def filter = new RowFilter(finderFilter?.operator?.value, new BinaryComparator(id))
 
         return filter
     } 
 
     def byteArrayConverter
+    def rowIdGenerator
 
     final static FilterFactory factory = new FilterFactory()
 

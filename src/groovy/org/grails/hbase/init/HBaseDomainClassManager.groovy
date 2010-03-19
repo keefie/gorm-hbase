@@ -159,7 +159,7 @@ public class HBaseDomainClassManager {
     }
 
     def addDynamicFinders(domainClass) {
-        LOG.debug("Adding dynamic finder support to ${domainClass.clazz.class.name}")
+        LOG.debug("Adding dynamic finder support to ${domainClass.name}")
         def mc = domainClass.clazz.metaClass
         
         mc.static.invokeMethod = {String methodName, args ->

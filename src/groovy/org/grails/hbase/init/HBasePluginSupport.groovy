@@ -129,6 +129,35 @@ class HBasePluginSupport {
             }
         }
 
+        "hbase.gorm.finder.handler.logicalOp"(org.grails.hbase.finders.LogicalOperatorHandler) { bean ->
+            bean.getBeanDefinition().setSingleton(true)
+        }
+
+        "hbase.gorm.finder.handler.rightParen"(org.grails.hbase.finders.RightParenthesisHandler) { bean ->
+            bean.getBeanDefinition().setSingleton(true)
+            nextHandler = ref("hbase.gorm.finder.handler.logicalOp")
+        }
+
+        "hbase.gorm.finder.handler.comparisonOp"(org.grails.hbase.finders.ComparisonOperatorHandler) { bean ->
+            bean.getBeanDefinition().setSingleton(true)
+            nextHandler = ref("hbase.gorm.finder.handler.rightParen")
+        }
+
+        "hbase.gorm.finder.handler.propertyName"(org.grails.hbase.finders.PropertyNameHandler) { bean ->
+            bean.getBeanDefinition().setSingleton(true)
+            nextHandler = ref("hbase.gorm.finder.handler.comparisonOp")
+        }
+
+        "hbase.gorm.finder.handler.leftParen"(org.grails.hbase.finders.LeftParenthesisHandler) { bean ->
+            bean.getBeanDefinition().setSingleton(true)
+            nextHandler = ref("hbase.gorm.finder.handler.propertyName")
+        }
+
+        "hbase.gorm.finder.handler.finderName"(org.grails.hbase.finders.FinderNameHandler) { bean ->
+            bean.getBeanDefinition().setSingleton(true)
+            nextHandler = ref("hbase.gorm.finder.handler.leftParen")
+        }
+
     }
 
     static doWithApplicationContext = {ApplicationContext applicationContext ->

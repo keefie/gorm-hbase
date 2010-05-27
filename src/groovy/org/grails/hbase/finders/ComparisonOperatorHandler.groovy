@@ -27,13 +27,13 @@ import org.grails.hbase.api.finders.Operator
  * @author Keith Thomas, redcoat.systems@gmail.com
  * created on 24-Jan-2010
  */
-class ComparisonOperatorParser implements DynamicFinderMethodParser {
+class ComparisonOperatorHandler implements DynamicFinderMethodHandler {
 
-    def parse(FinderFilterListBuilder builder, String[] methodNameTokens, Object[] methodArgs) {
+    def processToken(FinderFilterListBuilder builder, String[] methodNameTokens, Object[] methodArgs) {
         LOG.debug("Finder tokens received: $methodNameTokens")
         LOG.debug("Finder args received : $methodArgs")
 
-        builder.parser = nextParser
+        builder.handler = this.nextHandler
 
         Operator operator
         StringBuffer operatorNameBuffer = new StringBuffer()
@@ -63,12 +63,12 @@ class ComparisonOperatorParser implements DynamicFinderMethodParser {
 
         builder.checkArgs(remainingMethodNameTokens, methodArgs)
         
-        if (remainingMethodNameTokens) builder.parser.parse(builder, remainingMethodNameTokens, methodArgs)
+        if (remainingMethodNameTokens) builder.handler.processToken(builder, remainingMethodNameTokens, methodArgs)
     }
 
     private Map comparisonOperators = Operator.getComparisionOperators();
 
-    private static final DynamicFinderMethodParser nextParser = new RightParenthesisParser();
-    private static final Log LOG = LogFactory.getLog(ComparisonOperatorParser.class)
+    def nextHandler = new RightParenthesisHandler();
+    private static final Log LOG = LogFactory.getLog(ComparisonOperatorHandler.class)
 }
 

@@ -61,7 +61,7 @@ class FinderFilterListBuilder {
         String[] tokens = tokenizer.getTokens()
         this.methodArgs = tokenizer.getMethodArgs()
 
-        parser.parse(this, tokens, this.methodArgs);
+        handler.processToken(this, tokens, this.methodArgs);
         this.finderFilters = logicalBuilder.getFinderFilters()
 
         LOG.debug("Builder.getFinderFilters() returning: ${this.finderFilters}")
@@ -116,7 +116,7 @@ class FinderFilterListBuilder {
     Object[] methodArgs = new Object[0]
     String finderName
     GrailsDomainClass domainClass
-    DynamicFinderMethodParser parser = new FinderNameParser()
+    DynamicFinderMethodHandler handler = new FinderNameHandler()
     
     def logicalBuilder = new LogicalOrFilterListBuilder(this)
     def finderFilters

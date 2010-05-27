@@ -14,7 +14,6 @@
  * limitations under the License.
  *
  */
-
 package org.grails.hbase.finders
 
 import org.apache.commons.logging.Log
@@ -22,20 +21,20 @@ import org.apache.commons.logging.LogFactory
 
 import org.grails.hbase.api.finders.FinderFilterList
 import org.grails.hbase.api.finders.Operator
-
+import org.grails.hbase.util.HBaseLookupUtils
 /**
  * Look for the name of of a logical operator (And / Or) at the start of a string
  *
  * @author Keith Thomas, redcoat.systems@gmail.com
  * created on 24-Jan-2010
  */
-class LogicalOperatorParser implements DynamicFinderMethodParser {
+class LogicalOperatorHandler implements DynamicFinderMethodHandler {
 
-    def parse(FinderFilterListBuilder builder, String[] methodNameTokens, Object[] methodArgs) {
+    def processToken(FinderFilterListBuilder builder, String[] methodNameTokens, Object[] methodArgs) {
         LOG.debug("Finder tokens received: $methodNameTokens")
         LOG.debug("Finder args received : $methodArgs")
 
-        builder.parser = nextParser
+        builder.handler = HBaseLookupUtils.getBean('hbase.gorm.finder.handler.leftParen')
 
         Operator operator = logicalOperators.get(methodNameTokens[0].toLowerCase())
         if (!operator) throw new MissingMethodException(builder.methodName, builder.domainClass.clazz, new Object[0])
@@ -45,7 +44,7 @@ class LogicalOperatorParser implements DynamicFinderMethodParser {
 
         builder.addFinderFilter(new FinderFilterList(operator))
 
-        builder.parser.parse(builder, remainingMethodNameTokens, methodArgs)
+        builder.handler.processToken(builder, remainingMethodNameTokens, methodArgs)
     }
 
     def logicalOperators = [
@@ -53,7 +52,6 @@ class LogicalOperatorParser implements DynamicFinderMethodParser {
         'or':Operator.OR
     ]
 
-    private static final DynamicFinderMethodParser nextParser = new LeftParenthesisParser();
-    private static final Log LOG = LogFactory.getLog(LogicalOperatorParser.class)
+    private static final Log LOG = LogFactory.getLog(LogicalOperatorHandler.class)
 }
 

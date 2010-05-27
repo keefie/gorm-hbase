@@ -27,27 +27,27 @@ import org.grails.hbase.util.HBaseFinderUtils
  * @author Keith Thomas, redcoat.systems@gmail.com
  * created on 21-May-2010
  */
-class RightParenthesisParser implements DynamicFinderMethodParser {
+class RightParenthesisHandler implements DynamicFinderMethodHandler {
 
-    def parse(FinderFilterListBuilder builder, String[] methodNameTokens, Object[] methodArgs) {
+    def processToken(FinderFilterListBuilder builder, String[] methodNameTokens, Object[] methodArgs) {
         LOG.debug("Finder tokens received: $methodNameTokens")
         LOG.debug("Finder args received : $methodArgs")
 
-        builder.parser = nextParser
+        builder.handler = this.nextHandler
 
         if (methodNameTokens && methodNameTokens[0].equals(')')) {
             builder.endChild()
             String[] remainingMethodNameTokens = builder.reduceArray(methodNameTokens, 1)
             if (remainingMethodNameTokens) {
-                builder.parser.parse(builder, remainingMethodNameTokens, methodArgs)
+                builder.handler.processToken(builder, remainingMethodNameTokens, methodArgs)
             }
             return
         }
-        builder.parser.parse(builder, methodNameTokens, methodArgs)
+        builder.handler.processToken(builder, methodNameTokens, methodArgs)
 
     }
 
-    private static final DynamicFinderMethodParser nextParser = new LogicalOperatorParser();
-    private static final Log LOG = LogFactory.getLog(RightParenthesisParser.class)
+    def nextHandler = new LogicalOperatorHandler();
+    private static final Log LOG = LogFactory.getLog(RightParenthesisHandler.class)
 }
 

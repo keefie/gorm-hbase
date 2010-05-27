@@ -14,9 +14,7 @@
  * limitations under the License.
  *
  */
-
 package org.grails.hbase.finders
-
 /**
  * Break a method name apart into property names, comparison operators (Equal,
  * Greater, etc), and logical operators (and / or)
@@ -24,9 +22,9 @@ package org.grails.hbase.finders
  * @author Keith Thomas, redcoat.systems@gmail.com
  * created on 24-Jan-2010
  */
-interface DynamicFinderMethodParser {
+interface DynamicFinderMethodHandler {
 
-    def parse(FinderFilterListBuilder builder, String[] methodNameTokens, Object[] methodArgs);
+    def processToken(FinderFilterListBuilder builder, String[] methodNameTokens, Object[] methodArgs);
 	
 }
 

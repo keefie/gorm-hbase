@@ -27,13 +27,13 @@ import org.grails.hbase.util.HBaseFinderUtils
  * @author Keith Thomas, redcoat.systems@gmail.com
  * created on 24-Jan-2010
  */
-class PropertyNameParser implements DynamicFinderMethodParser {
+class PropertyNameHandler implements DynamicFinderMethodHandler {
 
-    def parse(FinderFilterListBuilder builder, String[] methodNameTokens, Object[] methodArgs) {
+    def processToken(FinderFilterListBuilder builder, String[] methodNameTokens, Object[] methodArgs) {
         LOG.debug("Finder tokens received: $methodNameTokens")
         LOG.debug("Finder args received : $methodArgs")
 
-        builder.parser = nextParser
+        builder.handler = nextHandler
 
         String propertyName
         StringBuffer propertyNameBuffer = new StringBuffer()
@@ -73,7 +73,7 @@ class PropertyNameParser implements DynamicFinderMethodParser {
         builder.checkArgs(remainingMethodNameTokens, remainingMethodArgs)  
 
         if (remainingMethodNameTokens) {
-            builder.parser.parse(builder, remainingMethodNameTokens, remainingMethodArgs)
+            builder.handler.processToken(builder, remainingMethodNameTokens, remainingMethodArgs)
         }
     }
 
@@ -87,7 +87,7 @@ class PropertyNameParser implements DynamicFinderMethodParser {
         return reduced
     }
 
-    private static final DynamicFinderMethodParser nextParser = new ComparisonOperatorParser();
-    private static final Log LOG = LogFactory.getLog(PropertyNameParser.class)	
+    def nextHandler = new ComparisonOperatorHandler();
+    private static final Log LOG = LogFactory.getLog(PropertyNameHandler.class)	
 }
 

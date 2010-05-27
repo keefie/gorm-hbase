@@ -14,25 +14,23 @@
  * limitations under the License.
  *
  */
-
 package org.grails.hbase.finders
 
 import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
-
 /**
  * Look for the name of the finder being invoked, i.e. findAll, findBy, findAllBy
  *
  * @author Keith Thomas, redcoat.systems@gmail.com
  * created on 24-Jan-2010
  */
-class FinderNameParser implements DynamicFinderMethodParser {
+class FinderNameHandler implements DynamicFinderMethodHandler {
 
-    def parse(FinderFilterListBuilder builder, String[] methodNameTokens, Object[] methodArgs) {
+    def processToken(FinderFilterListBuilder builder, String[] methodNameTokens, Object[] methodArgs) {
         LOG.debug("Finder tokens received: $methodNameTokens")
         LOG.debug("Finder args received : $methodArgs")
 
-        builder.parser = this.nextParser
+        builder.handler = this.nextHandler
         
         int i = 0;
         StringBuffer finderNameBuffer =  new StringBuffer("");
@@ -50,10 +48,10 @@ class FinderNameParser implements DynamicFinderMethodParser {
         LOG.debug("Finder name: ${finderNameBuffer.toString()}")
 
         String[] remainingMethodNameTokens = builder.reduceArray(methodNameTokens, i)
-        builder.parser.parse(builder, remainingMethodNameTokens, methodArgs)
+        builder.handler.processToken(builder, remainingMethodNameTokens, methodArgs)
     }
 
-    private static final DynamicFinderMethodParser nextParser = new LeftParenthesisParser();
-    private static final Log LOG = LogFactory.getLog(FinderNameParser.class)
+    def nextHandler = new LeftParenthesisHandler();
+    private static final Log LOG = LogFactory.getLog(FinderNameHandler.class)
 }
 

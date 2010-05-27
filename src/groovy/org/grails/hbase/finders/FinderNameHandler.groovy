@@ -51,7 +51,7 @@ class FinderNameHandler implements DynamicFinderMethodHandler {
         builder.handler.processToken(builder, remainingMethodNameTokens, methodArgs)
     }
 
-    def nextHandler = new LeftParenthesisHandler();
+    def nextHandler
     private static final Log LOG = LogFactory.getLog(FinderNameHandler.class)
 }
 

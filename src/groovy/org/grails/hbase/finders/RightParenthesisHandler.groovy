@@ -47,7 +47,7 @@ class RightParenthesisHandler implements DynamicFinderMethodHandler {
 
     }
 
-    def nextHandler = new LogicalOperatorHandler();
+    def nextHandler
     private static final Log LOG = LogFactory.getLog(RightParenthesisHandler.class)
 }
 

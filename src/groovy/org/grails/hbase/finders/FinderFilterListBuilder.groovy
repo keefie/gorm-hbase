@@ -25,6 +25,7 @@ import org.grails.hbase.api.finders.FinderFilterList
 import org.grails.hbase.api.finders.FinderFilter
 import org.grails.hbase.api.finders.Operator
 import org.grails.hbase.util.HBaseFinderUtils
+import org.grails.hbase.util.HBaseLookupUtils
 /**
  * Build a FinderFilterList from a dynamic finder method name and its args
  *
@@ -116,7 +117,7 @@ class FinderFilterListBuilder {
     Object[] methodArgs = new Object[0]
     String finderName
     GrailsDomainClass domainClass
-    DynamicFinderMethodHandler handler = new FinderNameHandler()
+    DynamicFinderMethodHandler handler =  HBaseLookupUtils.getBean('hbase.gorm.finder.handler.finderName')
     
     def logicalBuilder = new LogicalOrFilterListBuilder(this)
     def finderFilters

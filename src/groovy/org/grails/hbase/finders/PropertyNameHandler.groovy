@@ -87,7 +87,7 @@ class PropertyNameHandler implements DynamicFinderMethodHandler {
         return reduced
     }
 
-    def nextHandler = new ComparisonOperatorHandler();
+    def nextHandler
     private static final Log LOG = LogFactory.getLog(PropertyNameHandler.class)	
 }
 

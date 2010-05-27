@@ -47,7 +47,7 @@ class LeftParenthesisHandler implements DynamicFinderMethodHandler {
 
     }
 
-    def nextHandler = new PropertyNameHandler();
+    def nextHandler
     private static final Log LOG = LogFactory.getLog(LeftParenthesisHandler.class)
 }
 

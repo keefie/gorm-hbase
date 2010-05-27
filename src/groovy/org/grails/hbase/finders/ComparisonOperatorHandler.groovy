@@ -68,7 +68,7 @@ class ComparisonOperatorHandler implements DynamicFinderMethodHandler {
 
     private Map comparisonOperators = Operator.getComparisionOperators();
 
-    def nextHandler = new RightParenthesisHandler();
+    def nextHandler
     private static final Log LOG = LogFactory.getLog(ComparisonOperatorHandler.class)
 }
 

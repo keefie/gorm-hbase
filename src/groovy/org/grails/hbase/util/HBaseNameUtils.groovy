@@ -179,8 +179,7 @@ public class HBaseNameUtils {
         // Class cast added to stop IDE warning message being generated
         (GrailsDomainClass) grailsApplication.getArtefact(DomainClassArtefactHandler.TYPE, domainClassName)
     }
-
-
+    
     private static String sequenceTableName
     private static String referenceTableName
     private static final Log LOG = LogFactory.getLog(HBaseNameUtils.class)

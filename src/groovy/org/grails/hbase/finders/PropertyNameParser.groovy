@@ -14,14 +14,13 @@
  * limitations under the License.
  *
  */
-
 package org.grails.hbase.finders
 
 import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
 
 import org.grails.hbase.api.finders.FinderFilter
-
+import org.grails.hbase.util.HBaseFinderUtils
 /**
  * Look for the name of of a domain class property at the start of a string
  *
@@ -41,6 +40,7 @@ class PropertyNameParser implements DynamicFinderMethodParser {
         int tokensConsumed
 
         // Keep looping through the tokens until we find the longest valid property name
+        // TODO stop looping if we find an operator namee
         for (int i = 0; i < methodNameTokens.length; i++) {
             if (!propertyNameBuffer) propertyNameBuffer << methodNameTokens[i].substring(0, 1).toLowerCase() + methodNameTokens[i].substring(1)
             else propertyNameBuffer << methodNameTokens[i]
@@ -57,7 +57,13 @@ class PropertyNameParser implements DynamicFinderMethodParser {
         if (!propertyName ||!methodArgs.length)
         throw new MissingMethodException(builder.methodName, builder.domainClass.clazz, new Object[0])
 
-        builder.addFinderFilter(new FinderFilter(propertyName, methodArgs[0]))
+        def value
+        if (HBaseFinderUtils.isNumber(methodArgs[0])) {
+             value = HBaseFinderUtils.refineNumber(builder.domainClass, propertyName, "${methodArgs[0]}")
+        }
+        else value = methodArgs[0]
+
+        builder.addFinderFilter(new FinderFilter(propertyName, value))
 
         Object[] remainingMethodArgs = this.reduceArgs(methodArgs)
         builder.methodArgs = remainingMethodArgs

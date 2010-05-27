@@ -18,13 +18,13 @@ package org.grails.hbase.finders
 
 import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
-import org.apache.commons.lang.StringUtils
 
 import org.codehaus.groovy.grails.commons.GrailsDomainClass
 
 import org.grails.hbase.api.finders.FinderFilterList
 import org.grails.hbase.api.finders.FinderFilter
 import org.grails.hbase.api.finders.Operator
+import org.grails.hbase.util.HBaseFinderUtils
 /**
  * Build a FinderFilterList from a dynamic finder method name and its args
  *
@@ -51,7 +51,16 @@ class FinderFilterListBuilder {
     def getFinderFilters() {
         LOG.debug("Builder.getFinderFilters() invoked")
 
-        String[] tokens = StringUtils.splitByCharacterTypeCamelCase(this.methodName)
+        TokenizerStrategy tokenizer
+        if (HBaseFinderUtils.hasQuery(this.methodName, this.methodArgs)) 
+             tokenizer = new QueryStringTokenizer(this.domainClass, this.methodName, this.methodArgs)
+
+        else tokenizer = new MethodNameTokenizer(this.methodName, this.methodArgs)
+
+        tokenizer.tokenize()
+        String[] tokens = tokenizer.getTokens()
+        this.methodArgs = tokenizer.getMethodArgs()
+
         parser.parse(this, tokens, this.methodArgs);
         this.finderFilters = logicalBuilder.getFinderFilters()
 
@@ -93,6 +102,14 @@ class FinderFilterListBuilder {
         if (remainingMethodArgs.length > 1 ||
             (remainingMethodArgs.length == 1 && !(methodArgs[0] instanceof Map)))
         throw new MissingMethodException(this.methodName, this.domainClass.clazz, new Object[0])
+    }
+
+    protected void startChild() {
+        logicalBuilder.startChild()
+    }
+
+    protected void endChild() {
+        logicalBuilder.endChild()
     }
 
     String methodName

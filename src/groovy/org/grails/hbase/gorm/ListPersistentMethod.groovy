@@ -59,7 +59,7 @@ public class ListPersistentMethod implements PersistentMethod {
             long offset = 0
             String sort = null
 
-            // If the first arg is a FinderFilter then create the HBase Filter equaivalent
+            // Create any filters we need to satisty the requested query criteria
             def filter = this.getFilter(arguments)
 
             // If the last arg is a map it probably contains max, sort, offset values

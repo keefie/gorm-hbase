@@ -28,6 +28,7 @@ package org.grails.hbase
 class Publisher {
 
     String name
+    String city
     Date   published
 
     public String toString() {
@@ -42,6 +43,10 @@ class Publisher {
         else equals = this.name.equals(obj.name)
         if (!equals) return equals
 
+        if (this.city == null && obj.city == null) equals = true
+        else equals = this.city.equals(obj.city)
+        if (!equals) return equals
+
         if (this.published == null && obj.published == null) equals = true
         else equals = this.published.equals(obj.published)
         return equals
@@ -51,6 +56,7 @@ class Publisher {
     public int hashCode() {
         int hc = 123456
         if(name) hc = hc + name.hashCode()
+        if(city) hc = hc + city.hashCode()
         if(published) hc = hc + published.hashCode()
         return hc
     }

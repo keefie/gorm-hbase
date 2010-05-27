@@ -94,11 +94,24 @@ class Operator {
     public static def NOT_LIKE = new Operator(CompareFilter.CompareOp.NOT_EQUAL, 'NotLike', RegexStringComparator.class)
 
     private static Map comparisonOperators = [
+        'Equal':Operator.EQUAL,
+        'eq':Operator.EQUAL,
+        '=':Operator.EQUAL,
         'LessThan':Operator.LESS,
+        'lt':Operator.LESS,
+        '<':Operator.LESS,
         'LessThanEquals':Operator.LESS_OR_EQUAL,
+        'le':Operator.LESS_OR_EQUAL,
+        '<=':Operator.LESS_OR_EQUAL,
         'GreaterThan':Operator.GREATER,
+        'gt':Operator.GREATER,
+        '>':Operator.GREATER,
         'GreaterThanEquals':Operator.GREATER_OR_EQUAL,
+        'ge':Operator.GREATER_OR_EQUAL,
+        '>=':Operator.GREATER_OR_EQUAL,
         'NotEqual':Operator.NOT_EQUAL,
+        'ne':Operator.NOT_EQUAL,
+        '!=':Operator.NOT_EQUAL,
         'Like':Operator.LIKE,
         'NotLike':Operator.NOT_LIKE
     ]

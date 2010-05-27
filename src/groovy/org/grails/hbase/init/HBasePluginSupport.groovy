@@ -68,11 +68,18 @@ class HBasePluginSupport {
             conf = ref("hbase.configuration")
         }
 
-        "hbase.instance.mapper"(org.grails.hbase.store.InstanceMapper) { bean ->
+        "hbase.mapper.factory"(org.grails.hbase.store.DomainPropertyMapperFactory) { bean ->
+            bean.getBeanDefinition().setSingleton(true)
+            referenceTable = ref("hbase.reference.table")
+            byteArrayConverter = ref("hbase.byte.array.converter")
+        }
+
+        "hbase.instance.mapper"(org.grails.hbase.store.DomainClassMapper) { bean ->
             bean.getBeanDefinition().setSingleton(true)
             referenceTable = ref("hbase.reference.table")
             byteArrayConverter = ref("hbase.byte.array.converter")
             rowIdGenerator = ref("hbase.row.id.generator")
+            mapperFactory = ref("hbase.mapper.factory")
         }
 
         "hbase.filter.factory"(org.grails.hbase.finders.FilterFactory) { bean ->

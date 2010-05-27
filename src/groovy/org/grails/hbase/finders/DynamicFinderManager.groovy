@@ -33,23 +33,22 @@ import org.grails.hbase.util.HBaseFinderUtils
  */
 class DynamicFinderManager {
 
-    public boolean isValidDynamicFinderMethodNameFormat(methodName) {
-        if (methodName ==~ finders) return true
-        return false
-    }
-
     def execute(domainClass, methodName, Object[] args) {
-        LOG.debug("Execute() invoked as: ${methodName}(${args}) - ${args.class.name}}")
+        LOG.debug("Execute() invoked as: ${methodName}(${args})")
 
         if (!this.isValidDynamicFinderMethodNameFormat(methodName)) return null
 
         if (HBaseFinderUtils.hasFilter(args) && methodName.equals('find')) {
             args = this.setMaxRecords(args, 1)
             LOG.debug("Invoking list() on behalf of find() with args: $args")
-            return domainClass.list(args)
+            def list = domainClass.list(args)
+            if (!list?.size()) return null
+            return list.get(0)
         }
 
-        if (HBaseFinderUtils.hasFilter(args) || methodName.equals('findAll')) return domainClass.list(args)
+        if (HBaseFinderUtils.hasFilter(args) 
+            || (methodName.equals('findAll') && !HBaseFinderUtils.hasQuery(methodName, args)))
+        return domainClass.list(args)
 
         if (!HBaseFinderUtils.hasNativeHBaseFilter(methodName, args)) {
             def builder = new FinderFilterListBuilder(HBaseNameUtils.getDomainClass(domainClass.name))
@@ -65,13 +64,13 @@ class DynamicFinderManager {
         
             LOG.debug("List() args built: $args")
 
-            if (!methodName.startsWith('findBy')) return domainClass.list(args)
+            if (!methodName.startsWith('findBy') && !methodName.equals('find')) return domainClass.list(args)
 
             args = this.setMaxRecords(args, 1)
         }
         
         def list = domainClass.list(args)
-        if (!list.size()) return null
+        if (!list?.size()) return null
         return list.get(0)
     }
 
@@ -91,6 +90,11 @@ class DynamicFinderManager {
         arguments[i] = ['max':max]
 
         return arguments
+    }
+
+    public boolean isValidDynamicFinderMethodNameFormat(methodName) {
+        if (methodName ==~ finders) return true
+        return false
     }
 
     def finders = /find|findAll||findAllBy([A-Z][a-z|0-9]+)+||findBy([A-Z][a-z|0-9]+)+/

@@ -14,14 +14,12 @@
  * limitations under the License.
  *
  */
-
 package org.grails.hbase.finders
 
 import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
 
 import org.grails.hbase.api.finders.Operator
-
 /**
  * Look for the name of of a comparison operator (Equal, Greater, etc) at the
  * start of a string
@@ -44,10 +42,11 @@ class ComparisonOperatorParser implements DynamicFinderMethodParser {
         // Keep looping through the tokens until we find the longest valid operator name
         for (int i = 0; i < methodNameTokens.length; i++) {
             operatorNameBuffer << methodNameTokens[i]
-            String operatorName = operatorNameBuffer.toString()
+            String operatorName = operatorNameBuffer?.toString()
 
-            LOG.debug("Examining candidate comparison operator name: $operatorName")
+            LOG.debug("Examining candidate comparison operator: $operatorName")
             Operator comparisonOperator = comparisonOperators.get(operatorName)
+
             if (comparisonOperator) {
                 tokensConsumed = i + 1
                 operator =  comparisonOperator
@@ -69,7 +68,7 @@ class ComparisonOperatorParser implements DynamicFinderMethodParser {
 
     private Map comparisonOperators = Operator.getComparisionOperators();
 
-    private static final DynamicFinderMethodParser nextParser = new LogicalOperatorParser();
+    private static final DynamicFinderMethodParser nextParser = new RightParenthesisParser();
     private static final Log LOG = LogFactory.getLog(ComparisonOperatorParser.class)
 }
 

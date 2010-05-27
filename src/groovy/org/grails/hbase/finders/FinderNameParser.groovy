@@ -39,8 +39,8 @@ class FinderNameParser implements DynamicFinderMethodParser {
 
         while (i < methodNameTokens.length &&
                (methodNameTokens[i].equals('find') ||
-                methodNameTokens[i].equals('By') ||
-                methodNameTokens[i].equals('All')))
+               (methodNameTokens[i].equals('By')   ||
+                methodNameTokens[i].equals('All'))))
         {
             finderNameBuffer << methodNameTokens[i]
             i++
@@ -53,7 +53,7 @@ class FinderNameParser implements DynamicFinderMethodParser {
         builder.parser.parse(builder, remainingMethodNameTokens, methodArgs)
     }
 
-    private static final DynamicFinderMethodParser nextParser = new PropertyNameParser();
+    private static final DynamicFinderMethodParser nextParser = new LeftParenthesisParser();
     private static final Log LOG = LogFactory.getLog(FinderNameParser.class)
 }
 

@@ -70,8 +70,31 @@ class LogicalOrFilterListBuilder implements LogicalFilterListBuilder {
         finderFilters.filters.last().operator = op
     }
 
+    def startChild() {
+        LOG.debug("startChild() invoked")
+        def childFinderFilters = new FinderFilterList(Operator.OR)
+        this.finderFilters.addFilter(childFinderFilters)
+        this.finderStack.push(this.finderFilters)
+        this.finderFilters = childFinderFilters
+    }
+
+    def endChild() {
+        LOG.debug("endChild() invoked")
+        if (parent) {
+            parent.endChild()
+            return
+        }
+        this.finderFilters = this.finderStack.pop()
+    }
+
+    def startAsChild(LogicalAndFilterListBuilder parent) {
+        this.parent = parent
+    }
+
     private FinderFilterListBuilder mainBuilder
     private FinderFilterList finderFilters = new FinderFilterList(Operator.OR)
+    private List finderStack = [finderFilters]
+    private LogicalAndFilterListBuilder parent
 
     private static final Log LOG = LogFactory.getLog(FinderFilterListBuilder.class)
 }

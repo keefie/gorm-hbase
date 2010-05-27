@@ -14,23 +14,20 @@
  * limitations under the License.
  *
  */
+
 package org.grails.hbase.finders
 
-import org.grails.hbase.api.finders.FinderFilter
-import org.grails.hbase.api.finders.FinderFilterList
-import org.grails.hbase.api.finders.Operator
 /**
- * Manage the addition of new filters in a filter list with the logical operators 'or' & 'and'
+ * Interface that is implemented by the various strategies developed
+ * to refactor finder  method names and finder method args into one
+ * common format
  *
- * @author Keith Thomas, redcoat.systems@gmail.com
- * created on 24-Feb-2010
+ * @author Keith Thomas, keith.thomas@gmail.com
+ * created on 25th March, 2009
  */
-interface LogicalFilterListBuilder {
-    def addFilter(FinderFilter filter)
-    def addFilter(FinderFilterList filter)
-    def getFinderFilters()
-    def setOperatorOnLastFilter(Operator op)
-    def startChild()
-    def endChild()
+interface TokenizerStrategy {
+    public void tokenize()
+    public String[] getTokens()
+    public Object[] getMethodArgs()
 }
 

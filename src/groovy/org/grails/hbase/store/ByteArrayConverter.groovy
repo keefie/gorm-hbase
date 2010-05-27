@@ -14,7 +14,6 @@
  * limitations under the License.
  *
  */
-
 package org.grails.hbase.store
 
 import org.codehaus.groovy.grails.commons.GrailsDomainClass
@@ -34,7 +33,6 @@ import org.apache.hadoop.hbase.util.Bytes
 import org.grails.hbase.error.PropertyPersistRestoreException
 import org.grails.hbase.error.PropertyPersistenceException
 import org.grails.hbase.associations.IdSet
-
 /**
  * Convert data to/from byte[] format
  *
@@ -42,7 +40,6 @@ import org.grails.hbase.associations.IdSet
  * Date: Sep 17, 2009
  * Time: 12:28:55 PM
  */
-
 public class ByteArrayConverter {
 
     public byte[] getValueToPersist(fieldValue) {
@@ -52,29 +49,34 @@ public class ByteArrayConverter {
         Bytes.toBytes(bos.toString())
     }
 
-   
     public byte[] getValueToPersist(fieldValue, String fieldName) {
         LOG.debug("getValueToPersist() invoked with args $fieldValue and $fieldName of type ${fieldValue.class.name}")
         byte[] valueToPersist
 
         switch (fieldValue) {
             case boolean:
-            case Boolean:
             case long:
-            case Long:
             case short:
-            case Short:
             case int:
-            case Integer:
             case float:
-            case Float:
             case double:
-            case Double:
             case String:
                valueToPersist = Bytes.toBytes(fieldValue)
                break
+            case Integer:
+               valueToPersist = Bytes.toBytes(fieldValue.intValue())
+               break
+            case Boolean:
+            case Long:
+            case Short:
+            case Float:
+            case Double:
+               def indexOfUnqualifiedName = fieldValue.class.name.lastIndexOf('.') + 1
+               def primitiveName = fieldValue.class.name.substring(indexOfUnqualifiedName).toLowerCase()
+               valueToPersist = Bytes.toBytes(fieldValue."${primitiveName}Value"())
+               break
             case char:
-               case Character:
+            case Character:
                char[] c = [fieldValue] as char[]
                valueToPersist = Bytes.toBytes(new String(c))
                break
@@ -138,7 +140,6 @@ public class ByteArrayConverter {
 
         return valueToPersist
     }
-
        
     public Object getPersistedValue(byte[] colBytes, Class dataType) {
         // TODO Inject persister
@@ -147,7 +148,6 @@ public class ByteArrayConverter {
         Serializer ser = new Persister()
         ser.read(dataType, xml)   
     }
-
 
     public Object getPersistedValue(byte[] colBytes, String colName, GrailsDomainClass grailsClass, String fieldName) {
         def fieldType = grailsClass?.getPropertyByName(fieldName)?.type
@@ -269,7 +269,6 @@ public class ByteArrayConverter {
         return fieldValue
     }
 
-
     public byte[] toByteArray(Object object, String fieldName) {
         LOG.debug("Invoking toByteArray() for $fieldName with value $object of type ${object.class.name}")
         try {
@@ -286,7 +285,6 @@ public class ByteArrayConverter {
         }
     }
 
-
     public Object fromByteArray(byte[] array, String fieldName) {
         // TODO Should test if serializable
         try {
@@ -300,7 +298,6 @@ public class ByteArrayConverter {
             throw new PropertyPersistRestoreException("Unable to read value for property named $fieldName from database", ex)
         }
     }
-
 
     private static final Log LOG = LogFactory.getLog(ByteArrayConverter.class)
 }

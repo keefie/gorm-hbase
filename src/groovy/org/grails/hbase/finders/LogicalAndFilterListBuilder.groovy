@@ -31,7 +31,7 @@ import org.grails.hbase.api.finders.Operator
 class LogicalAndFilterListBuilder {
 
     LogicalAndFilterListBuilder(FinderFilterListBuilder mainBuilder, 
-                  LogicalOrFilterListBuilder parent, FinderFilterList finderFilters) {
+        LogicalOrFilterListBuilder parent, FinderFilterList finderFilters) {
         this.mainBuilder = mainBuilder
         this.parent = parent
         this.finderFilters = finderFilters
@@ -46,7 +46,7 @@ class LogicalAndFilterListBuilder {
         LOG.debug("Adding filter: $filter")
         if (filter.operator == Operator.AND) return
 
-        mainBuilder.setLogicalBuilder(parent)
+        this.mainBuilder.setLogicalBuilder(parent)
     }
 
     def getFinderFilters() {
@@ -57,9 +57,28 @@ class LogicalAndFilterListBuilder {
         finderFilters.filters.last().operator = op
     }
 
+    def startChild() {
+        LOG.debug("startChild() invoked")
+        this.child = new LogicalOrFilterListBuilder(mainBuilder)
+        this.mainBuilder.setLogicalBuilder(child)
+        this.child.startAsChild(this)
+    }
+
+    def endChild() {
+        LOG.debug("endChild() invoked")
+        if (child) {
+            this.finderFilters.addFilter(child.getFinderFilters())
+            this.mainBuilder.setLogicalBuilder(this)
+            this.child = null
+            return
+        }
+        parent.endChild()
+    }
+    
     private FinderFilterListBuilder mainBuilder
     private FinderFilterList finderFilters
     private LogicalOrFilterListBuilder parent
+    private LogicalOrFilterListBuilder child
 
     private static final Log LOG = LogFactory.getLog(FinderFilterListBuilder.class)
 }

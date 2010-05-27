@@ -37,7 +37,7 @@ class LogicalOperatorParser implements DynamicFinderMethodParser {
 
         builder.parser = nextParser
 
-        Operator operator = logicalOperators.get(methodNameTokens[0])
+        Operator operator = logicalOperators.get(methodNameTokens[0].toLowerCase())
         if (!operator) throw new MissingMethodException(builder.methodName, builder.domainClass.clazz, new Object[0])
 
         String[] remainingMethodNameTokens = builder.reduceArray(methodNameTokens, 1)
@@ -49,11 +49,11 @@ class LogicalOperatorParser implements DynamicFinderMethodParser {
     }
 
     def logicalOperators = [
-        'And':Operator.AND,
-        'Or':Operator.OR
+        'and':Operator.AND,
+        'or':Operator.OR
     ]
 
-    private static final DynamicFinderMethodParser nextParser = new PropertyNameParser();
+    private static final DynamicFinderMethodParser nextParser = new LeftParenthesisParser();
     private static final Log LOG = LogFactory.getLog(LogicalOperatorParser.class)
 }
 

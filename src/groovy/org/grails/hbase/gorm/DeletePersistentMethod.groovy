@@ -30,7 +30,6 @@ import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
 
 import org.grails.hbase.util.HBaseNameUtils
-
 /**
  * Domain class delete() method support
  *
@@ -38,7 +37,6 @@ import org.grails.hbase.util.HBaseNameUtils
  * Date: Sep 2, 2009
  * Time: 11:02:56 AM
  */
-
 public class DeletePersistentMethod implements PersistentMethod {
 
     def invoke(target, String methodName, Object[] arguments) {
@@ -83,8 +81,8 @@ public class DeletePersistentMethod implements PersistentMethod {
             throw ex
         }
         catch (Exception ex) {
-            String errmsg = th.message
-            if (!th.message) errmsg = "Unexpected error: ${ex.class.name}"
+            String errmsg = ex.message
+            if (!ex.message) errmsg = "Unexpected error: ${ex.class.name}"
             LOG.error(errmsg, ex)
             throw new DataIntegrityViolationException(errmsg)
         }

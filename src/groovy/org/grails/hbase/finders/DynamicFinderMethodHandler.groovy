@@ -24,7 +24,8 @@ package org.grails.hbase.finders
  */
 interface DynamicFinderMethodHandler {
 
-    def processToken(FinderFilterListBuilder builder, String[] methodNameTokens, Object[] methodArgs);
+    def processToken(FinderFilterListBuilder builder, String[] methodNameTokens, Object[] methodArgs)
+    def handles(String token)
 	
 }
 

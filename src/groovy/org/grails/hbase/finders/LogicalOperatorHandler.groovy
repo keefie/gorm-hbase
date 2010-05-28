@@ -47,6 +47,11 @@ class LogicalOperatorHandler implements DynamicFinderMethodHandler {
         builder.handler.processToken(builder, remainingMethodNameTokens, methodArgs)
     }
 
+    def handles(String token) {
+        if (logicalOperators.get(token.toLowerCase())) return true
+        return false
+    }
+
     def logicalOperators = [
         'and':Operator.AND,
         'or':Operator.OR

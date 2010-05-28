@@ -41,11 +41,13 @@ class ComparisonOperatorHandler implements DynamicFinderMethodHandler {
 
         // Keep looping through the tokens until we find the longest valid operator name
         for (int i = 0; i < methodNameTokens.length; i++) {
+            if (i > 0 && this.nextHandler.handles(methodNameTokens[i])) break
+
             operatorNameBuffer << methodNameTokens[i]
             String operatorName = operatorNameBuffer?.toString()
 
             LOG.debug("Examining candidate comparison operator: $operatorName")
-            Operator comparisonOperator = comparisonOperators.get(operatorName)
+            Operator comparisonOperator = this.comparisonOperators.get(operatorName)
 
             if (comparisonOperator) {
                 tokensConsumed = i + 1
@@ -64,6 +66,11 @@ class ComparisonOperatorHandler implements DynamicFinderMethodHandler {
         builder.checkArgs(remainingMethodNameTokens, methodArgs)
         
         if (remainingMethodNameTokens) builder.handler.processToken(builder, remainingMethodNameTokens, methodArgs)
+    }
+
+    def handles(String token) {
+        if (this.comparisonOperators.get(token)) return true
+        false
     }
 
     private Map comparisonOperators = Operator.getComparisionOperators();

@@ -42,6 +42,8 @@ class PropertyNameHandler implements DynamicFinderMethodHandler {
         // Keep looping through the tokens until we find the longest valid property name
         // TODO stop looping if we find an operator namee
         for (int i = 0; i < methodNameTokens.length; i++) {
+            if (i > 0 && this.nextHandler.handles(methodNameTokens[i])) break
+
             if (!propertyNameBuffer) propertyNameBuffer << methodNameTokens[i].substring(0, 1).toLowerCase() + methodNameTokens[i].substring(1)
             else propertyNameBuffer << methodNameTokens[i]
 
@@ -59,7 +61,7 @@ class PropertyNameHandler implements DynamicFinderMethodHandler {
 
         def value
         if (HBaseFinderUtils.isNumber(methodArgs[0])) {
-             value = HBaseFinderUtils.refineNumber(builder.domainClass, propertyName, "${methodArgs[0]}")
+            value = HBaseFinderUtils.refineNumber(builder.domainClass, propertyName, "${methodArgs[0]}")
         }
         else value = methodArgs[0]
 
@@ -75,6 +77,11 @@ class PropertyNameHandler implements DynamicFinderMethodHandler {
         if (remainingMethodNameTokens) {
             builder.handler.processToken(builder, remainingMethodNameTokens, remainingMethodArgs)
         }
+    }
+
+    // TODO Maybe impleent this method one day, at the moment we don't use it
+    def handles(String token) {
+        false
     }
 
     private Object[] reduceArgs(Object[] orig) {

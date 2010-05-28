@@ -35,10 +35,7 @@ class FinderNameHandler implements DynamicFinderMethodHandler {
         int i = 0;
         StringBuffer finderNameBuffer =  new StringBuffer("");
 
-        while (i < methodNameTokens.length &&
-               (methodNameTokens[i].equals('find') ||
-               (methodNameTokens[i].equals('By')   ||
-                methodNameTokens[i].equals('All'))))
+        while (i < methodNameTokens.length && this.handles(methodNameTokens[i]))
         {
             finderNameBuffer << methodNameTokens[i]
             i++
@@ -49,6 +46,11 @@ class FinderNameHandler implements DynamicFinderMethodHandler {
 
         String[] remainingMethodNameTokens = builder.reduceArray(methodNameTokens, i)
         builder.handler.processToken(builder, remainingMethodNameTokens, methodArgs)
+    }
+
+    def handles(String token) {
+        if (token.equals('find') || (token.equals('By') || token.equals('All'))) return true
+        false
     }
 
     def nextHandler

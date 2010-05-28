@@ -47,6 +47,11 @@ class LeftParenthesisHandler implements DynamicFinderMethodHandler {
 
     }
 
+    def handles(String token) {
+        if (token?.equals('(') || nextHandler.handles(token)) return true
+        false
+    }
+
     def nextHandler
     private static final Log LOG = LogFactory.getLog(LeftParenthesisHandler.class)
 }

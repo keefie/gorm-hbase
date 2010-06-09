@@ -18,9 +18,9 @@ import org.grails.hbase.init.HBasePluginSupport
 
 class GormHbaseGrailsPlugin {
     // the plugin version
-    def version = "0.2.2"
+    def version = "0.2.3"
     // the version or versions of Grails the plugin is designed for
-    def grailsVersion = "1.2.1"
+    def grailsVersion = "1.3.1"
     // the other plugins this plugin depends on
     def dependsOn = [:]
     // resources that are excluded from plugin packaging
@@ -38,7 +38,7 @@ class GormHbaseGrailsPlugin {
     def authorEmail = "redcoat.systems@gmail.com"
     def title = "GORM-HBase Plug-in"
     def description = '''\\
-A plug-in that emulates the behavior of the GORM-Hibernate plug-in against a Hadoop HDFS HBase 0.20.3 datasource
+A plug-in that emulates the behavior of the GORM-Hibernate plug-in against a Hadoop HDFS HBase 0.20.4 datasource
 '''
 
     // URL to the plugin's documentation

@@ -1,9 +1,9 @@
-<plugin name='gorm-hbase' version='0.2.1' grailsVersion='1.2.1'>
+<plugin name='gorm-hbase' version='0.2.3' grailsVersion='1.3.1'>
   <author>Keith Thomas</author>
   <authorEmail>redcoat.systems@gmail.com</authorEmail>
   <title>GORM-HBase Plug-in</title>
   <description>\
-A plug-in that emulates the behavior of the GORM-Hibernate plug-in against a Hadoop HDFS HBase 0.20.3 datasource
+A plug-in that emulates the behavior of the GORM-Hibernate plug-in against a Hadoop HDFS HBase 0.20.4 datasource
 </description>
   <documentation>http://grails.org/plugin/gorm-hbase</documentation>
   <resources>
@@ -18,10 +18,6 @@ A plug-in that emulates the behavior of the GORM-Hibernate plug-in against a Had
     <resource>org.grails.hbase.SortMe</resource>
     <resource>org.grails.hbase.SupportedPropertyTypes</resource>
   </resources>
-  <dependencies>
-    <resolvers>
-      <resolver type='grailsPlugins' name='grailsPlugins' />
-    </resolvers>
-  </dependencies>
+  <dependencies />
   <behavior />
 </plugin>

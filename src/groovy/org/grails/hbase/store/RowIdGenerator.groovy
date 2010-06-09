@@ -50,7 +50,7 @@ public class RowIdGenerator {
         // Use the HBase builting feature to safely create row id's'
         return sequenceTable.incrementColumnValue(Bytes.toBytes(domainTableName),
             Constants.DEFAULT_SEQUENCE_FAMILY,
-            Constants.DEFAULT_SEQUENCE_QUALIFIER, 1)
+            Constants.DEFAULT_SEQUENCE_QUALIFIER, 1) - 1
     }
 
     def toPersistentForm(Long id) {

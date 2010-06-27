@@ -19,5 +19,133 @@ A plug-in that emulates the behavior of the GORM-Hibernate plug-in against a Had
     <resource>org.grails.hbase.SupportedPropertyTypes</resource>
   </resources>
   <dependencies />
-  <behavior />
+  <behavior>
+    <method name='delete' artefact='Domain' type='InRootDir'>
+      <description />
+      <argument type='java.lang.Object' />
+    </method>
+    <method name='save' artefact='Domain' type='InRootDir'>
+      <description />
+      <argument type='java.lang.Boolean' />
+    </method>
+    <method name='save' artefact='Domain' type='InRootDir'>
+      <description />
+      <argument type='java.util.Map' />
+    </method>
+    <method name='save' artefact='Domain' type='InRootDir'>
+      <description />
+    </method>
+    <method name='delete' artefact='Domain' type='org.grails.hbase.Author'>
+      <description />
+      <argument type='java.lang.Object' />
+    </method>
+    <method name='save' artefact='Domain' type='org.grails.hbase.Author'>
+      <description />
+      <argument type='java.lang.Boolean' />
+    </method>
+    <method name='save' artefact='Domain' type='org.grails.hbase.Author'>
+      <description />
+      <argument type='java.util.Map' />
+    </method>
+    <method name='save' artefact='Domain' type='org.grails.hbase.Author'>
+      <description />
+    </method>
+    <method name='getBooks' artefact='Domain' type='org.grails.hbase.Author'>
+      <description />
+    </method>
+    <method name='getBooks' artefact='Domain' type='org.grails.hbase.Author'>
+      <description />
+      <argument type='java.lang.Object' />
+    </method>
+    <method name='setBooks' artefact='Domain' type='org.grails.hbase.Author'>
+      <description />
+      <argument type='java.util.Set' />
+    </method>
+    <method name='addToBooks' artefact='Domain' type='org.grails.hbase.Author'>
+      <description />
+      <argument type='java.lang.Object' />
+    </method>
+    <method name='removeFromBooks' artefact='Domain' type='org.grails.hbase.Author'>
+      <description />
+      <argument type='java.lang.Object' />
+    </method>
+    <method name='delete' artefact='Domain' type='org.grails.hbase.Book'>
+      <description />
+      <argument type='java.lang.Object' />
+    </method>
+    <method name='save' artefact='Domain' type='org.grails.hbase.Book'>
+      <description />
+      <argument type='java.lang.Boolean' />
+    </method>
+    <method name='save' artefact='Domain' type='org.grails.hbase.Book'>
+      <description />
+      <argument type='java.util.Map' />
+    </method>
+    <method name='save' artefact='Domain' type='org.grails.hbase.Book'>
+      <description />
+    </method>
+    <method name='getPublisher' artefact='Domain' type='org.grails.hbase.Book'>
+      <description />
+    </method>
+    <method name='delete' artefact='Domain' type='org.grails.hbase.Publisher'>
+      <description />
+      <argument type='java.lang.Object' />
+    </method>
+    <method name='save' artefact='Domain' type='org.grails.hbase.Publisher'>
+      <description />
+      <argument type='java.lang.Boolean' />
+    </method>
+    <method name='save' artefact='Domain' type='org.grails.hbase.Publisher'>
+      <description />
+      <argument type='java.util.Map' />
+    </method>
+    <method name='save' artefact='Domain' type='org.grails.hbase.Publisher'>
+      <description />
+    </method>
+    <method name='delete' artefact='Domain' type='org.grails.hbase.SortMe'>
+      <description />
+      <argument type='java.lang.Object' />
+    </method>
+    <method name='save' artefact='Domain' type='org.grails.hbase.SortMe'>
+      <description />
+      <argument type='java.lang.Boolean' />
+    </method>
+    <method name='save' artefact='Domain' type='org.grails.hbase.SortMe'>
+      <description />
+      <argument type='java.util.Map' />
+    </method>
+    <method name='save' artefact='Domain' type='org.grails.hbase.SortMe'>
+      <description />
+    </method>
+    <method name='delete' artefact='Domain' type='org.grails.hbase.SupportedPropertyTypes'>
+      <description />
+      <argument type='java.lang.Object' />
+    </method>
+    <method name='save' artefact='Domain' type='org.grails.hbase.SupportedPropertyTypes'>
+      <description />
+      <argument type='java.lang.Boolean' />
+    </method>
+    <method name='save' artefact='Domain' type='org.grails.hbase.SupportedPropertyTypes'>
+      <description />
+      <argument type='java.util.Map' />
+    </method>
+    <method name='save' artefact='Domain' type='org.grails.hbase.SupportedPropertyTypes'>
+      <description />
+    </method>
+    <property name='books__association__id__list__' type='org.grails.hbase.Author' artefact='Domain'>
+      <description />
+    </property>
+    <property name='books' type='org.grails.hbase.Author' artefact='Domain'>
+      <description />
+    </property>
+    <property name='books' type='org.grails.hbase.Author' artefact='Domain'>
+      <description />
+    </property>
+    <property name='publisher__association__id__' type='org.grails.hbase.Book' artefact='Domain'>
+      <description />
+    </property>
+    <property name='publisher' type='org.grails.hbase.Book' artefact='Domain'>
+      <description />
+    </property>
+  </behavior>
 </plugin>

@@ -18,9 +18,9 @@ import org.grails.hbase.init.HBasePluginSupport
 
 class GormHbaseGrailsPlugin {
     // the plugin version
-    def version = "0.2.3"
+    def version = "0.2.4"
     // the version or versions of Grails the plugin is designed for
-    def grailsVersion = "1.3.1"
+    def grailsVersion = "1.3.2"
     // the other plugins this plugin depends on
     def dependsOn = [:]
     // resources that are excluded from plugin packaging
@@ -31,7 +31,8 @@ class GormHbaseGrailsPlugin {
             "target/**/*",
             "docs/**/*",
             "CodeNarcReport.html",
-            "stacktrace.log"
+            "stacktrace.log",
+            "README"
     ]
 
     def author = "Keith Thomas"
